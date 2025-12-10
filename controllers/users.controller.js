@@ -9,7 +9,7 @@ const GET_USERS = async (req, res) => {
 }
 
 const POST_USER = async(req, res) => {
-    
+
     const {name, phone, age, password} = req.body
     const newUser = await User.create({
         name, phone, age, password
@@ -20,7 +20,21 @@ const POST_USER = async(req, res) => {
     })
 }
 
+const UPDATE_USER = async(req, res) => {
+    const data = req.body
+    const _id = req.user.id
+    const updatedUser = await User.findByIdAndUpdate({_id}, data)
+    if(!updatedUser) res.json({
+        message: "User not found"
+    })
+    res.json({
+        message: "Successfully updated",
+        data: await User.findById(_id)
+    })
+
+}
 module.exports = {
 	GET_USERS,
-    POST_USER
+    POST_USER,
+    UPDATE_USER,
 }
