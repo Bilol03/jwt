@@ -11,7 +11,7 @@ const checkToken = async (req, res, next) => {
 
 	token = token.split(' ')[1]
 	const data = jwt.verify(token, SECRET_KEY)
-	console.log(data)
+
 	const isExist = await User.findOne({ _id: data._id })
 	if (!isExist)
 		return res.json({

@@ -1,4 +1,5 @@
 const { User } = require('../models/users.model.js')
+const { options } = require('../routes/users.route.js')
 const GET_USERS = async (req, res) => {
 
 	const users = await User.find().populate("passports")
@@ -51,7 +52,7 @@ const DELETE_USER = async function(req, res) {
 }
     
 const GET_ME = async(req, res) => {
-    const data = await User.findById(req.user._id).populate('passports').exec()
+    const data = await User.findById(req.user._id).populate([{path: 'passports', options: {strictPopulate: false}} ,{path: "posts", options: {strictPopulate: false}}]).exec()
     return res.json({
         data
     })

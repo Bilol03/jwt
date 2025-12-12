@@ -9,7 +9,14 @@ const UserSchema = new mongoose.Schema({
 	passport: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "passports"
+	},
+
+	posts: [
+		{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'posts' 
 	}
+	]
 })
 
 const User = mongoose.model("users", UserSchema)
