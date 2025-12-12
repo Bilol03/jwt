@@ -15,6 +15,7 @@ const checkToken = async (req, res, next) => {
 	const isExist = await User.findOne({ _id: data.id })
 	if (!isExist)
 		return res.json({
+			status: 401,
 			message: 'User does not exist',
 		})
     req.user = data

@@ -1,12 +1,35 @@
 const { User } = require('../models/users.model.js')
 const jwt = require('jsonwebtoken')
+const bcrypt = require("bcryptjs")
+
 const SECRET_KEY = 'juda_vapshe_hechkimbilmas_otaham_maxfiy_kalit'
+
+const REGISTER = async(req, res) => {
+	const  {name ,age ,phone ,password} = req.body
+	if(!(name && age && phone && password)) return res.json({
+		message: "All fields are requiered"
+	})
+
+	const newUser = await User.create({
+		name,
+		age,
+		phone,
+		password: await bcrypt.hash(password, 12)
+	})
+	res.json({
+		message: "Successfully registered",
+		data: newUser
+	})
+}
+
 const LOGIN = async (req, res) => {
 	const { phone, password } = req.body
 	let foundUser = await User.findOne({ phone })
 	if (!foundUser) return res.json({ message: 'User not found' })
-	if (password !== foundUser.password)
-		return res.json({ message: 'Wrong password' })
+	const isCorrectPassword = await bcrypt.compare(password, foundUser.password)
+	if(!isCorrectPassword) return res.json({
+		message: "Wrong password"
+	})
 	const payload = {
 		id: foundUser._id,
 		phone: foundUser.phone,
@@ -24,4 +47,5 @@ const LOGIN = async (req, res) => {
 
 module.exports = {
 	LOGIN,
+	REGISTER
 }

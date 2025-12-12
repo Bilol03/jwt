@@ -33,8 +33,27 @@ const UPDATE_USER = async(req, res) => {
     })
 
 }
+
+
+const DELETE_USER = async function(req, res) {
+    const id = req.params.user_id
+
+    let data = await User.findById(id)
+    if(!data) return res.json({
+        message: "User does not exist or already deleted!"
+    })
+
+    let result = await User.findByIdAndDelete(id)
+    return res.json({
+        message: "Successfully deleted",
+        data: result
+    })
+}
+    
+
 module.exports = {
 	GET_USERS,
     POST_USER,
     UPDATE_USER,
+    DELETE_USER
 }
