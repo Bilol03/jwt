@@ -1,7 +1,7 @@
 const { User } = require('../models/users.model.js')
 const GET_USERS = async (req, res) => {
 
-	const users = await User.find()
+	const users = await User.find().populate("passports")
 	return res.json({
 		message: 'Success',
 		data: users,
@@ -50,10 +50,16 @@ const DELETE_USER = async function(req, res) {
     })
 }
     
+const GET_ME = async(req, res) => {
+    const data = await User.findById(req.user._id).populate('passports').exec()
+    return res.json({
+        data
+    })
+}
 
 module.exports = {
 	GET_USERS,
     POST_USER,
     UPDATE_USER,
-    DELETE_USER
+    DELETE_USER, GET_ME
 }

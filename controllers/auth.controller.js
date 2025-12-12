@@ -31,7 +31,7 @@ const LOGIN = async (req, res) => {
 		message: "Wrong password"
 	})
 	const payload = {
-		id: foundUser._id,
+		_id: foundUser._id,
 		phone: foundUser.phone,
 		name: foundUser.name,
 	}
